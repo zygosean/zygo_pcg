@@ -1,11 +1,20 @@
-extends Node
+extends RefCounted
 class_name PCGPoint
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
+var transform : Transform3D = Transform3D.IDENTITY
+var attributes : Dictionary[String, Variant] = {}
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+func _init(p_transform: Transform3D = Transform3D.IDENTITY):
+	transform = p_transform
+	
+func get_position() -> Vector3:
+	return transform.origin
+	
+func set_attribute(key : String, value : Variant):
+	attributes[key] = value
+	
+func get_attribute(key : String, default : Variant = null) -> Variant:
+	return attributes.get(key, default)
+	
+func has_attribute(key : String) -> bool:
+	return attributes.has(key)  
