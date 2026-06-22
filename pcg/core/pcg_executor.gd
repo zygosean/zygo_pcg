@@ -22,6 +22,7 @@ func generate() -> PCGPointSet:
 	var context = PCGContext.new()
 	context.pcg_seed = pcg_seed
 	context.bounds = bounds
+	context.splines = PCGSpatialQuery.find_paths_in_bounds(get_tree(), bounds)
 	
 	_last_result = pipeline.run(context)
 	generation_complete.emit(_last_result)
