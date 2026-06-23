@@ -5,7 +5,9 @@ static func find_paths_in_bounds(tree : SceneTree, bounds : AABB) -> Array[Path3
 	var result : Array[Path3D] = []
 	for node in tree.current_scene.find_children("*", "Path3D", true, false):
 		var path := node as Path3D
-		if path.curve == null:
+		if path.curve == null or path.curve.point_count < 2:
+			continue
+		if path.curve.get_baked_length() <= 0:
 			continue
 		for point in path.curve.get_baked_points():
 			if bounds.has_point(path.global_transform * point):

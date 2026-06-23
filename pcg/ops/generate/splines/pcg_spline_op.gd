@@ -27,3 +27,19 @@ func execute(point_set: PCGPointSet, context: PCGContext) -> PCGPointSet:
 ## [param progress] is 0.0 → 1.0 along the spline length.
 func on_spline_sample(point_set: PCGPointSet, context: PCGContext, xform: Transform3D, progress: float) -> void:
 	push_warning("PCGSplineOp.on_spline_sample() not implemented in: " + get_script().resource_path)
+
+static func is_inside_baked(local_pos : Vector3, baked : PackedVector3Array) -> bool:
+	if baked.size() < 3:
+		return false
+	var px := local_pos.x
+	var pz := local_pos.z
+	var crossings := 0
+	var count := baked.size()
+	for i in count:
+		var a := baked[i]
+		var b := baked[(i + 1) % count]
+		if (a.z <= pz and b.z > pz) or (b.z <= pz and a.z > pz):
+			var t := (pz - a.z) / (b.z - a.z)
+			if a.x + t * (b.x - a.x) > px:
+				crossings += 1
+	return (crossings % 2) == 1

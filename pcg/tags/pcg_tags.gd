@@ -13,3 +13,4 @@ class Ops:
 		
 class Attributes:
 	const Density = "density"
+	const SplineProgress = "spline_progress"
