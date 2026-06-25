@@ -1,6 +1,11 @@
 [gd_scene format=3 uid="uid://duqxnhgge7a08"]
 
 [ext_resource type="Script" uid="uid://imk4sbioioun" path="res://pcg/debug/pcg_test_scene.gd" id="1_53q0u"]
+[ext_resource type="Script" uid="uid://b3b0rghe1yfwr" path="res://pcg/core/pcg_executor.gd" id="2_kfbq2"]
+[ext_resource type="Script" uid="uid://bhk08mnucf51r" path="res://pcg/ops/base/pcg_op.gd" id="3_4dugh"]
+[ext_resource type="Script" uid="uid://1f6ntwk0pkrp" path="res://pcg/ops/generate/splines/scatter_on_spline_op.gd" id="4_kfbq2"]
+[ext_resource type="Script" uid="uid://c08oi60674mcj" path="res://pcg/core/pcg_pipeline.gd" id="5_grrlh"]
+[ext_resource type="Script" uid="uid://dhqrlrj3ewsem" path="res://pcg/debug/pcg_debug_visualizer.gd" id="6_0i4oc"]
 
 [sub_resource type="Environment" id="Environment_fp4ho"]
 ambient_light_color = Color(0.49485445, 0.4948545, 0.49485445, 1)
@@ -9,6 +14,22 @@ ambient_light_color = Color(0.49485445, 0.4948545, 0.49485445, 1)
 
 [sub_resource type="Compositor" id="Compositor_3qbqj"]
 
+[sub_resource type="Resource" id="Resource_4dugh"]
+script = ExtResource("4_kfbq2")
+metadata/_custom_type_script = "uid://1f6ntwk0pkrp"
+
+[sub_resource type="Resource" id="Resource_kfbq2"]
+script = ExtResource("5_grrlh")
+ops = Array[ExtResource("3_4dugh")]([SubResource("Resource_4dugh")])
+metadata/_custom_type_script = "uid://c08oi60674mcj"
+
+[sub_resource type="Curve3D" id="Curve3D_67ri8"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 1, 5, 1, 0, 5, 0, 0, 0, 0, 63.963, 5, 46.285, 0, 0, 0, 0, 0, 0, 90.74, 5, 77.042, 0, 0, 0, 0, 0, 0, 42.808, 5, 96.623, 0, 0, 0, 0, 0, 0, 15.614, 5, 70.375, 0, 0, 0, 0, 0, 0, 31.11319, -0.038909912, 47.094585),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0)
+}
+point_count = 6
+
 [node name="Main" type="Node3D" unique_id=301720092]
 script = ExtResource("1_53q0u")
 
@@ -16,3 +37,21 @@ script = ExtResource("1_53q0u")
 environment = SubResource("Environment_fp4ho")
 camera_attributes = SubResource("CameraAttributesPractical_p6jxr")
 compositor = SubResource("Compositor_3qbqj")
+
+[node name="PCGExecutor" type="Node" parent="." unique_id=695928019]
+script = ExtResource("2_kfbq2")
+pipeline = SubResource("Resource_kfbq2")
+pcg_seed = 2963868239
+bounds = AABB(0, 0, 0, 100, 50, 50)
+metadata/_custom_type_script = "uid://b3b0rghe1yfwr"
+
+[node name="PCGDebugVisualizer" type="Node3D" parent="." unique_id=1599537782 node_paths=PackedStringArray("executor")]
+script = ExtResource("6_0i4oc")
+executor = NodePath("../PCGExecutor")
+metadata/_custom_type_script = "uid://dhqrlrj3ewsem"
+
+[node name="Node" type="Node" parent="." unique_id=1247211252]
+
+[node name="Path3D" type="Path3D" parent="Node" unique_id=1622361810]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.5687637, 0)
+curve = SubResource("Curve3D_67ri8")

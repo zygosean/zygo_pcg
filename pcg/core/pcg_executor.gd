@@ -1,3 +1,4 @@
+@tool
 extends Node
 class_name PCGExecutor
 
@@ -7,8 +8,13 @@ signal generation_complete(point_set : PCGPointSet)
 @export var pcg_seed : int = 0
 @export var bounds : AABB = AABB(Vector3.ZERO, Vector3(100,10,100))
 @export var auto_generate_on_ready : bool = true
+@export var spline_override : Array[Path3D] = []
+
+@export_tool_button("Regenerate", "RefreshSmall") var _regenerate_btn : Callable = _regenerate
+
 
 var _last_result : PCGPointSet = null
+
 
 func _ready() -> void:
 	if auto_generate_on_ready:
@@ -22,7 +28,9 @@ func generate() -> PCGPointSet:
 	var context = PCGContext.new()
 	context.pcg_seed = pcg_seed
 	context.bounds = bounds
-	context.splines = PCGSpatialQuery.find_paths_in_bounds(get_tree(), bounds)
+	context.splines = spline_override if not spline_override.is_empty() else PCGSpatialQuery.find_paths_in_bounds(get_tree(), bounds)
+	
+	print("PCGExecutor: found %d splines, bounds = %s" % [context.splines.size(), bounds])
 	
 	_last_result = pipeline.run(context)
 	generation_complete.emit(_last_result)
@@ -30,3 +38,7 @@ func generate() -> PCGPointSet:
 	
 func get_last_result() -> PCGPointSet:
 	return _last_result
+	
+func _regenerate() -> void:
+	pcg_seed = randi()
+	generate()

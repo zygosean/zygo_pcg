@@ -1,3 +1,4 @@
+@tool
 extends Resource
 class_name PCGPipeline
 
@@ -16,4 +17,5 @@ func run(context: PCGContext) -> PCGPointSet:
 			return PCGPointSet.new()
 	return point_set
 	
-	
+static func build() -> PCGPipelineBuilder:
+	return PCGPipelineBuilder.new() 

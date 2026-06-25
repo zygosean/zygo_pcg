@@ -1,3 +1,4 @@
+@tool
 extends PCGSplineOp
 class_name SampleSplineOp
 

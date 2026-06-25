@@ -2,7 +2,11 @@
 extends Node3D
 class_name PCGDebugVisualizer
 
-@export var executor : PCGExecutor
+@export var executor : PCGExecutor:
+	set(value):
+		executor = value
+		if executor and not executor.generation_complete.is_connected(_on_generation_complete):
+			executor.generation_complete.connect(_on_generation_complete)
 @export var point_radius : float = 0.2
 @export var show_bounds : bool = true
 

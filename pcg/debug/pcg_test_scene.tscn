@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://jqgsbs4c2l2l"]
+
+[ext_resource type="Script" uid="uid://b3b0rghe1yfwr" path="res://pcg/core/pcg_executor.gd" id="1_nw5ey"]
+[ext_resource type="Script" uid="uid://bhk08mnucf51r" path="res://pcg/ops/base/pcg_op.gd" id="2_1y6yi"]
+[ext_resource type="Script" uid="uid://5t1gd2qav51p" path="res://pcg/ops/generate/scatter_points_op.gd" id="3_1y6yi"]
+[ext_resource type="Script" uid="uid://c08oi60674mcj" path="res://pcg/core/pcg_pipeline.gd" id="3_7xoop"]
+
+[sub_resource type="Resource" id="Resource_nw5ey"]
+script = ExtResource("3_1y6yi")
+metadata/_custom_type_script = "uid://5t1gd2qav51p"
+
+[sub_resource type="Resource" id="Resource_fp4ho"]
+script = ExtResource("3_7xoop")
+ops = Array[ExtResource("2_1y6yi")]([SubResource("Resource_nw5ey"), null])
+metadata/_custom_type_script = "uid://c08oi60674mcj"
+
+[node name="PcgTestScene" type="Node" unique_id=1998837540]
+
+[node name="PCGExecutor" type="Node" parent="." unique_id=1164403668]
+script = ExtResource("1_nw5ey")
+pipeline = SubResource("Resource_fp4ho")
+pcg_seed = 3203917908
+metadata/_custom_type_script = "uid://b3b0rghe1yfwr"

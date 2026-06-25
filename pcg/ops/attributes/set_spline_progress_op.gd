@@ -1,3 +1,4 @@
+@tool
 extends PCGOp
 class_name SetSplineProgressOp
 
