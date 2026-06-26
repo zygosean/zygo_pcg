@@ -40,10 +40,12 @@ func _draw_points(point_set : PCGPointSet) -> void:
 		print("PCGDebugVisualizer: No points to draw.")
 		return
 
+	var to_local := global_transform.affine_inverse()
+	
 	_immediate_mesh.surface_begin(Mesh.PRIMITIVE_LINES)
 
 	for p in point_set.points:
-		var pos : Vector3 = p.get_position()
+		var pos : Vector3 = to_local * p.get_position()
 		var density : float = p.get_attribute(PCGTags.Attributes.Density, 1.0)
 		var color := Color(density, 0.2, 1.0 - density)
 
@@ -71,18 +73,19 @@ func _draw_points(point_set : PCGPointSet) -> void:
 	print("PCGDebugVisualizer: Drew %d points." % point_set.get_count())
 
 func _draw_bounds(aabb : AABB) -> void:
+	var to_local := global_transform.affine_inverse()
 	_immediate_mesh.surface_begin(Mesh.PRIMITIVE_LINES)
 	_immediate_mesh.surface_set_color(Color.YELLOW)
 
 	var corners := [
-		aabb.position,
-		aabb.position + Vector3(aabb.size.x, 0, 0),
-		aabb.position + Vector3(0, aabb.size.y, 0),
-		aabb.position + Vector3(aabb.size.x, aabb.size.y, 0),
-		aabb.position + Vector3(0, 0, aabb.size.z),
-		aabb.position + Vector3(aabb.size.x, 0, aabb.size.z),
-		aabb.position + Vector3(0, aabb.size.y, aabb.size.z),
-		aabb.position + aabb.size,
+		to_local * aabb.position,
+		to_local * aabb.position + Vector3(aabb.size.x, 0, 0),
+		to_local * aabb.position + Vector3(0, aabb.size.y, 0),
+		to_local * aabb.position + Vector3(aabb.size.x, aabb.size.y, 0),
+		to_local * aabb.position + Vector3(0, 0, aabb.size.z),
+		to_local * aabb.position + Vector3(aabb.size.x, 0, aabb.size.z),
+		to_local * aabb.position + Vector3(0, aabb.size.y, aabb.size.z),
+		to_local * aabb.position + aabb.size,
 	]
 
 	var edges := [

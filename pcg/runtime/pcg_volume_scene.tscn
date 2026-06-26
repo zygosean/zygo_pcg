@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://idx1xhwcpyo8"]
+
+[ext_resource type="Script" uid="uid://bx231oh4mymlt" path="res://pcg/runtime/pcg_volume_node.gd" id="1_fevgo"]
+[ext_resource type="Script" uid="uid://b3b0rghe1yfwr" path="res://pcg/core/pcg_executor.gd" id="2_k5q0l"]
+[ext_resource type="Script" uid="uid://bhk08mnucf51r" path="res://pcg/ops/base/pcg_op.gd" id="3_bjlyd"]
+[ext_resource type="Script" uid="uid://c08oi60674mcj" path="res://pcg/core/pcg_pipeline.gd" id="5_xvtq5"]
+[ext_resource type="Script" uid="uid://dhqrlrj3ewsem" path="res://pcg/debug/pcg_debug_visualizer.gd" id="6_u2hf6"]
+
+[sub_resource type="Resource" id="Resource_fp4ho"]
+script = ExtResource("5_xvtq5")
+metadata/_custom_type_script = "uid://c08oi60674mcj"
+
+[node name="PcgVolumeScene" type="Node3D" unique_id=910649540]
+script = ExtResource("1_fevgo")
+
+[node name="PCGExecutor" type="Node" parent="." unique_id=1206904672]
+script = ExtResource("2_k5q0l")
+pipeline = SubResource("Resource_fp4ho")
+pcg_seed = 2644998277
+auto_generate_on_ready = false
+metadata/_custom_type_script = "uid://b3b0rghe1yfwr"
+
+[node name="PCGDebugVisualizer" type="Node3D" parent="." unique_id=2017437204 node_paths=PackedStringArray("executor")]
+script = ExtResource("6_u2hf6")
+executor = NodePath("../PCGExecutor")
+metadata/_custom_type_script = "uid://dhqrlrj3ewsem"
