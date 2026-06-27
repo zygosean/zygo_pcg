@@ -23,5 +23,19 @@ func filter(predicate : Callable) -> PCGPointSet:
 			result.add_point(p)
 	return result
 	
+func get_positions() -> PackedVector3Array:
+	var result := PackedVector3Array()
+	result.resize(points.size())
+	for i in points.size():
+		result[i] = points[i].get_position()
+	return result	
+	
+func filter_by_mask(mask : PackedByteArray) -> PCGPointSet:
+	var result := PCGPointSet.new()
+	for i in points.size():
+		if mask[i] == 1:
+			result.add_point(points[i])
+	return result
+
 func clear():
 	points.clear()

@@ -1,7 +1,29 @@
 extends Node3D
 
+@export var generate_on_ready : bool = true
+
 func _ready() -> void:
 
+	var executor := PCGExecutor.new()
+	if generate_on_ready:
+		executor = _generate_executor()
+
+	# --- Set up visualizer ---
+	var visualizer := PCGDebugVisualizer.new()
+	visualizer.executor = executor
+	add_child(visualizer)
+
+	# --- Set up camera so you can see something ---
+	var camera := Camera3D.new()
+	camera.position = Vector3(25, 60, 80)
+	camera.rotation_degrees = Vector3(-35, 0, 0)
+	add_child(camera)
+
+	# --- Run ---
+	if generate_on_ready:
+		executor.generate()
+
+func _generate_executor() -> PCGExecutor:
 	var curve := Curve3D.new()
 
 ## Curve test
@@ -15,7 +37,7 @@ func _ready() -> void:
 	curve.add_point(Vector3(40, 0, 40))
 	curve.add_point(Vector3(10, 0, 40))
 	curve.add_point(Vector3(10, 0, 10))  # closes back to start
-	
+	#print("PCGTestScene: Created curve with 5 points.")
 	var path := Path3D.new()
 	path.curve = curve
 	add_child(path)
@@ -38,7 +60,7 @@ func _ready() -> void:
 
 	var filter_by_spline_prox := FilterInsideSplineOp.new()
 	#filter_by_spline_prox.max_distance = 10.5
-	filter_by_spline_prox.invert = false
+
 
 	var pipeline := PCGPipeline.new()
 	pipeline.ops.assign([scatter_inside_spline, filter_by_spline_prox])
@@ -50,17 +72,5 @@ func _ready() -> void:
 	executor.bounds = AABB(Vector3.ZERO, Vector3(50, 5, 50))
 	executor.auto_generate_on_ready = false
 	add_child(executor)
-
-	# --- Set up visualizer ---
-	var visualizer := PCGDebugVisualizer.new()
-	visualizer.executor = executor
-	add_child(visualizer)
-
-	# --- Set up camera so you can see something ---
-	var camera := Camera3D.new()
-	camera.position = Vector3(25, 60, 80)
-	camera.rotation_degrees = Vector3(-35, 0, 0)
-	add_child(camera)
-
-	# --- Run ---
-	executor.generate()
+	
+	return executor

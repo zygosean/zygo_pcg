@@ -16,23 +16,43 @@ func execute(point_set : PCGPointSet, context : PCGContext) -> PCGPointSet:
 		push_warning("SetDistanceToSplineOp: No splines in context")
 		return point_set
 	
-	for point in point_set.points:
-		var closest_dist := INF
-		for path in context.splines:
-			var local_pos : Vector3 = path.global_transform.affine_inverse() * point.get_position()
-			var closest_local : Vector3 = path.curve.get_closest_point(local_pos)
-			var world_closest : Vector3 = path.global_transform * closest_local
-			var dist := point.get_position().distance_to(world_closest)
-			if dist < closest_dist:
-				closest_dist = dist
+	var positions := point_set.get_positions()
+	var best_distances := PackedFloat32Array()
+	best_distances.resize(positions.size())
+	best_distances.fill(INF)
+	
+	for path in context.splines:
+		var baked := path.curve.get_baked_points()
+		var to_local := path.global_transform.affine_inverse()
+		var dists := PCGKernels.closest_distances_to_polyline(positions, baked, to_local)
+		for i in dists.size():
+			if best_distances[i] < dists[i]:
+				best_distances[i] = dists[i]
+				
+		# Optionally convert raw distances to a normalised falloff
+	var values := PCGKernels.distances_to_falloff(best_distances, max_distance) if normalise else best_distances
+	
+	# Write back into points — this loop is O(N) trivial assignments, not compute
+	for i in point_set.points.size():
+		point_set.points[i].set_attribute(output_attribute, values[i])
 		
-		var value : float
-		if normalise:
-			value = 1.0 - clampf(closest_dist / max_distance, 0.0, 1.0)
-		else:
-			value = closest_dist
-			
-		point_set.attribute(output_attribute, value)
+#	for point in point_set.points:
+#		var closest_dist := INF
+#		for path in context.splines:
+#			var local_pos : Vector3 = path.global_transform.affine_inverse() * point.get_position()
+#			var closest_local : Vector3 = path.curve.get_closest_point(local_pos)
+#			var world_closest : Vector3 = path.global_transform * closest_local
+#			var dist := point.get_position().distance_to(world_closest)
+#			if dist < closest_dist:
+#				closest_dist = dist
+#		
+#		var value : float
+#		if normalise:
+#			value = 1.0 - clampf(closest_dist / max_distance, 0.0, 1.0)
+#		else:
+#			value = closest_dist
+#			
+#		point_set.attribute(output_attribute, value)
 		
 	return point_set
 		

@@ -24,7 +24,6 @@ point_count = 6
 
 [sub_resource type="Resource" id="Resource_p6jxr"]
 script = ExtResource("4_67ri8")
-point_count = 100000
 metadata/_custom_type_script = "uid://5t1gd2qav51p"
 
 [sub_resource type="Resource" id="Resource_3qbqj"]
@@ -39,7 +38,6 @@ metadata/_custom_type_script = "uid://c08oi60674mcj"
 
 [node name="Main" type="Node3D" unique_id=301720092]
 script = ExtResource("1_53q0u")
-generate_on_ready = false
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1740776003]
 environment = SubResource("Environment_fp4ho")
@@ -53,13 +51,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.5687637, 0)
 curve = SubResource("Curve3D_67ri8")
 
 [node name="PcgVolumeScene" parent="." unique_id=910649540 instance=ExtResource("2_kfbq2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.666115, -11.492233, 12.14492)
-size = Vector3(50, 50, 50)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42.76139, -11.492233, 62.052452)
 pipeline = SubResource("Resource_fp4ho")
 
 [node name="PCGExecutor" parent="PcgVolumeScene" index="0" unique_id=1206904672]
 pipeline = SubResource("Resource_fp4ho")
-bounds = AABB(-19.333885, -36.492233, -12.85508, 50, 50, 50)
+bounds = AABB(-7.2386093, -61.492233, 12.052452, 100, 100, 100)
 
 [node name="PCGProfilerRunner" type="Node" parent="." unique_id=50672766]
 script = ExtResource("7_4dugh")
