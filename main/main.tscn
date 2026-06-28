@@ -6,7 +6,10 @@
 [ext_resource type="Script" uid="uid://5t1gd2qav51p" path="res://pcg/ops/generate/scatter_points_op.gd" id="4_67ri8"]
 [ext_resource type="Script" uid="uid://1f6ntwk0pkrp" path="res://pcg/ops/generate/splines/scatter_on_spline_op.gd" id="5_grrlh"]
 [ext_resource type="Script" uid="uid://c08oi60674mcj" path="res://pcg/core/pcg_pipeline.gd" id="6_0i4oc"]
+[ext_resource type="Script" uid="uid://cm1041wq0cl3x" path="res://pcg/runtime/runners/pcg_runner_realizer.gd" id="7_0i4oc"]
 [ext_resource type="Script" uid="uid://cpdbgit58m2ev" path="res://pcg/debug/profiler/pcg_profiler_runner.gd" id="7_4dugh"]
+[ext_resource type="Script" uid="uid://c7b8rb3r274sh" path="res://pcg/runtime/realizers/pcg_realizer.gd" id="8_bsumw"]
+[ext_resource type="Script" uid="uid://5jilgpgkb1xt" path="res://pcg/runtime/realizers/pcg_realizer_multimesh.gd" id="9_fwcvl"]
 
 [sub_resource type="Environment" id="Environment_fp4ho"]
 ambient_light_color = Color(0.49485445, 0.4948545, 0.49485445, 1)
@@ -24,7 +27,6 @@ point_count = 6
 
 [sub_resource type="Resource" id="Resource_p6jxr"]
 script = ExtResource("4_67ri8")
-point_count = 100000
 metadata/_custom_type_script = "uid://5t1gd2qav51p"
 
 [sub_resource type="Resource" id="Resource_3qbqj"]
@@ -36,6 +38,13 @@ metadata/_custom_type_script = "uid://1f6ntwk0pkrp"
 script = ExtResource("6_0i4oc")
 ops = Array[ExtResource("3_4dugh")]([SubResource("Resource_p6jxr"), SubResource("Resource_3qbqj")])
 metadata/_custom_type_script = "uid://c08oi60674mcj"
+
+[sub_resource type="BoxMesh" id="BoxMesh_p6jxr"]
+
+[sub_resource type="Resource" id="Resource_na0o7"]
+script = ExtResource("9_fwcvl")
+mesh = SubResource("BoxMesh_p6jxr")
+metadata/_custom_type_script = "uid://5jilgpgkb1xt"
 
 [node name="Main" type="Node3D" unique_id=301720092]
 script = ExtResource("1_53q0u")
@@ -53,13 +62,23 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.5687637, 0)
 curve = SubResource("Curve3D_67ri8")
 
 [node name="PcgVolumeScene" parent="." unique_id=910649540 instance=ExtResource("2_kfbq2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.666115, -11.492233, 12.14492)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.666115, -11.492233, -30.919693)
 size = Vector3(50, 50, 50)
 pipeline = SubResource("Resource_fp4ho")
 
 [node name="PCGExecutor" parent="PcgVolumeScene" index="0" unique_id=1206904672]
 pipeline = SubResource("Resource_fp4ho")
-bounds = AABB(-19.333885, -36.492233, -12.85508, 50, 50, 50)
+pcg_seed = 1998559181
+bounds = AABB(-19.333885, -36.492233, -55.919693, 50, 50, 50)
+
+[node name="PCGRunnerRealizer" type="Node3D" parent="PcgVolumeScene" unique_id=1393027504 node_paths=PackedStringArray("executor")]
+script = ExtResource("7_0i4oc")
+executor = NodePath("../PCGExecutor")
+realizers = Array[ExtResource("8_bsumw")]([SubResource("Resource_na0o7")])
+
+[node name="@Node3D@27157" type="Node3D" parent="PcgVolumeScene/PCGRunnerRealizer" unique_id=162657232]
+
+[node name="PCGRunnerRealizer_Output" type="Node3D" parent="PcgVolumeScene/PCGRunnerRealizer" unique_id=1737813487]
 
 [node name="PCGProfilerRunner" type="Node" parent="." unique_id=50672766]
 script = ExtResource("7_4dugh")

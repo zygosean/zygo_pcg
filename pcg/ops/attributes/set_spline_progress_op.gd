@@ -19,15 +19,15 @@ func execute(point_set : PCGPointSet, context : PCGContext) -> PCGPointSet:
 			if length <= 0.0:
 				continue
 			var lp : Vector3 = path.global_transform.affine_inverse() * point.get_position()
-			var offset : float = curve.get_closest_offset(lp)
-			var closest_world : Vector3 = path.global_transform * curve.sample_baked(offset)
+			var offset : float = path.curve.get_closest_offset(lp)
+			var closest_world : Vector3 = path.global_transform * path.curve.sample_baked(offset)
 			var dist := point.get_position().distance_to(closest_world)
 			if dist < closest_offset:
 				closest_offset = dist
 				local_pos = lp
 				#store progress for path
-				var progress := offset / 
+				var progress := offset / length
 				point.set_attribute(output_attribute, progress)
-				closest_length = curve.get_baked_length()
+				closest_length = path.curve.get_baked_length()
 	
 	return point_set
