@@ -29,6 +29,7 @@ func generate() -> PCGPointSet:
 	context.pcg_seed = pcg_seed
 	context.bounds = bounds
 	context.splines = spline_override if not spline_override.is_empty() else PCGSpatialQuery.find_paths_in_bounds(get_tree(), bounds)
+	context.collision_meshes = PCGSpatialQuery.find_concave_shape_in_bounds(get_tree(), bounds)
 #	var world := get_viewport().get_world_3d() if get_viewport() else null
 #	context.physics_space = world.direct_space_state if world else null
 	

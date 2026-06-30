@@ -37,3 +37,29 @@ static func find_paths_in_bounds(tree : SceneTree, bounds : AABB) -> Array[Path3
 		else:
 			result.append(path)
 	return result
+	
+static func find_concave_shape_in_bounds(tree : SceneTree, bounds : AABB) -> Array[CollisionShape3D]:
+	var result : Array[CollisionShape3D] = []
+	if tree == null:
+		return result
+		
+	var scene_root : Node
+	if Engine.is_editor_hint():
+		scene_root = Engine.get_singleton("EditorInterface").get_edited_scene_root()
+	else:
+		scene_root = tree.current_scene
+		
+	if scene_root == null:
+		return result
+
+	for node in scene_root.find_children("*", "CollisionShape3D", true, false):
+		var cs:= node as CollisionShape3D
+		if not cs.shape is ConcavePolygonShape3D:
+			continue
+			# Check if any face of the shape's AABB overlaps our bounds	
+		var shape_aabb := cs.shape.get_debug_mesh().get_aabb()
+		var world_aabb := AABB(cs.global_transform * shape_aabb.position, shape_aabb.size)
+		if bounds.intersects(world_aabb):
+			result.append(cs)
+	
+	return result

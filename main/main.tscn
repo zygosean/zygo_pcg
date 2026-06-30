@@ -5,7 +5,6 @@
 [ext_resource type="Script" uid="uid://bhk08mnucf51r" path="res://pcg/ops/base/pcg_op.gd" id="3_4dugh"]
 [ext_resource type="Script" uid="uid://5t1gd2qav51p" path="res://pcg/ops/generate/scatter_points_op.gd" id="4_67ri8"]
 [ext_resource type="Script" uid="uid://w51rl635pdh" path="res://pcg/ops/attributes/project_to_surface_op.gd" id="4_grrlh"]
-[ext_resource type="Script" uid="uid://1f6ntwk0pkrp" path="res://pcg/ops/generate/splines/scatter_on_spline_op.gd" id="5_grrlh"]
 [ext_resource type="Script" uid="uid://c08oi60674mcj" path="res://pcg/core/pcg_pipeline.gd" id="6_0i4oc"]
 [ext_resource type="Script" uid="uid://cm1041wq0cl3x" path="res://pcg/runtime/runners/pcg_runner_realizer.gd" id="7_0i4oc"]
 [ext_resource type="Script" uid="uid://cpdbgit58m2ev" path="res://pcg/debug/profiler/pcg_profiler_runner.gd" id="7_4dugh"]
@@ -35,13 +34,9 @@ metadata/_custom_type_script = "uid://5t1gd2qav51p"
 script = ExtResource("4_grrlh")
 metadata/_custom_type_script = "uid://w51rl635pdh"
 
-[sub_resource type="Resource" id="Resource_bsumw"]
-script = ExtResource("5_grrlh")
-metadata/_custom_type_script = "uid://1f6ntwk0pkrp"
-
 [sub_resource type="Resource" id="Resource_fp4ho"]
 script = ExtResource("6_0i4oc")
-ops = Array[ExtResource("3_4dugh")]([SubResource("Resource_grrlh"), SubResource("Resource_0i4oc"), SubResource("Resource_bsumw")])
+ops = Array[ExtResource("3_4dugh")]([SubResource("Resource_grrlh"), SubResource("Resource_0i4oc")])
 metadata/_custom_type_script = "uid://c08oi60674mcj"
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_73k8k"]
@@ -82,22 +77,22 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.5687637, 0)
 curve = SubResource("Curve3D_67ri8")
 
 [node name="PcgVolumeScene" parent="." unique_id=910649540 instance=ExtResource("2_kfbq2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.1002655, -1.7157345, 45.305214)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6980515, 4.8158255, 45.305214)
 pipeline = SubResource("Resource_fp4ho")
 
 [node name="PCGExecutor" parent="PcgVolumeScene" index="0" unique_id=1206904672]
 pipeline = SubResource("Resource_fp4ho")
-pcg_seed = 509377463
-bounds = AABB(-38.899734, -51.715736, -4.694786, 100, 100, 100)
+pcg_seed = 622569390
+bounds = AABB(-48.30195, -45.184174, -4.694786, 100, 100, 100)
 
 [node name="PCGRunnerRealizer" type="Node3D" parent="PcgVolumeScene" unique_id=1393027504 node_paths=PackedStringArray("executor")]
 script = ExtResource("7_0i4oc")
 executor = NodePath("../PCGExecutor")
 realizers = Array[ExtResource("8_bsumw")]([SubResource("Resource_na0o7")])
 
-[node name="PCGRunnerRealizer_Output" type="Node3D" parent="PcgVolumeScene/PCGRunnerRealizer" unique_id=409128276]
+[node name="@Node3D@61315" type="Node3D" parent="PcgVolumeScene/PCGRunnerRealizer" unique_id=1807017032]
 
-[node name="@Node3D@59198" type="Node3D" parent="PcgVolumeScene/PCGRunnerRealizer" unique_id=409238097]
+[node name="PCGRunnerRealizer_Output" type="Node3D" parent="PcgVolumeScene/PCGRunnerRealizer" unique_id=1005987353]
 
 [node name="PCGProfilerRunner" type="Node" parent="." unique_id=50672766]
 script = ExtResource("7_4dugh")
